@@ -1,0 +1,60 @@
+<head>
+    <style>
+    p   {
+    font-size:16px; 
+    text-align:justify;
+    }
+  
+    ul {
+    list-style-type: none;
+    } 
+    
+
+    li.som-titre-niveau1 { 
+     font-size:20px; 
+            font-style: italic;
+            font-weight: light bold;
+display: block;
+margin: 6px;
+text-decoration: none;
+    color: #e75406
+}
+li.som-titre-niveau1:hover{
+color: black;
+  }
+li.som-titre-niveau1::before{
+  content: "•";
+  padding-right: 8px;
+  }
+    li.som-titre-niveau2 { 
+    font-size:15.5px; 
+margin: 5.5px;
+    
+  }
+li.som-titre-niveau2::before{
+    content: "•";
+  padding-right: 8px;
+}
+li.som-titre-niveau3 { 
+    font-size: 18px; 
+    font-weight: light bold;
+margin: 5.5px;
+   margin-left: 80px;
+    color:#6B8E23;
+    }
+ li.som-titre-niveau3:hover{
+ text-decoration: underline;
+  }
+li.som-titre-niveau4 { 
+    font-size: 15px; 
+    font-weight: bold;
+margin: 6px;
+margin-left: 80px;
+    }
+li.som-titre-niveau4:hover{
+ text-decoration: underline;
+
+  }
+    summary style:-webkit-details-marker { display: none }
+</style>
+</head>

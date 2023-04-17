@@ -1,0 +1,54 @@
+13/04/2023
+Procédure de création automatique d'un sommaire en html pour les communiqués de presse d'iPubli
+Produite par Juliette Janes (IST) pour le programme ComPresse_automate_sommaire.py
+
+
+Ce programme intervient une fois les communiqués de presse saisis et ajoutés dans iPubli et permet d'obtenir une structure HTML du 
+sommaire correspondant automatiquement.
+
+
+En entrée:
+Lors de la construction des métadonnées, on aura auparavant inséré dans les métadonnées les thématiques et sous thématiques (quand nécessaire) de chaque communiqué dans la colonne
+description sous la forme Thematique, sous-thématique || description
+
+Créer le tableur de travail:
+	Extraire les métadonnées des communiqués de presse d'iPubli. 	
+	Au niveau des communiqués de presse dans iPubli, Contexte> Extraire les métadonnées.
+	Ouvrir le tableur en csv dans excel et diviser en plusieurs colonnes la colonne dc.description[fr] de telle façon:
+		Sélectionner toute la colonne dc.description puis dans l'onglet Données, cliquer sur l'élément convertir.
+		Dans l'assistant de conversion:
+			- vérifier que toute la colonne description est bien prise en compte, puis cliquer sur "Délimité" et suivant
+			- Sélectionner le séparateur "autres" et indiquer comme séparateur | puis suivant
+			- Choisir l'emplacement des nouvelles colonnes: remplacer l'élément indique ($O$1) par $AA$1 afin de ne pas supprimer d'autres colonnes et cliquer sur suivant. 
+		On a alors 2 colonnes séparées, une description et une contenant les thématiques et sous thématiques. réaliser le même travail de séparation pour séparer les thématiques et sous thématiques en sélectionnant
+la nouvelle colonne créée puis en indiquant comme séparateur la virgule et en choisissant un emplacement non utilisé.
+		Supprimer les colonnes créées inutiles et renommer les colonnes contenant les thématiques et sous thématiques en "thematique" et "sous_thematique" sans accent ni majuscule.
+
+Organiser le dossier de travail:
+	Dans un dossier vide, ajouter le programme ComPresse_automate_sommaire.py et le csv contenant les métadonnées à traiter.
+
+
+Lancement du programme
+Dans Anaconda prompt, naviguer jusqu'au dossier de travail: cd chemin/vers/le/dosssier
+Puis lancer le programme python Compresse_automate_sommaire.py Nom/du/tableur
+
+Des informations sont affichées dans le terminal pour suivre le travail réalisé par le programme. Le sommaire en html est généré au niveau du dossier du travail sous le nom sommaire.html
+	
+
+En cas de problèmes:
+Il peut arriver qu’il y ait une erreur et que le programme ne s’exécute pas.
+Auquel cas, se concentrer sur la dernière ligne affichée, commençant par […]Error. Elle indique le plus souvent l’erreur et comment la corriger.  On liste 
+ici plusieurs erreurs qu’il est possible de rencontrer et comment les corriger soi-même rapidement.
+
+	FileNotFoundError : No such file or directory : [FICHIER]
+Dans ce cas, le programme ne trouve pas le fichier/dossier indiqué dans le programme ou dans la ligne de commande. S’il s’agit du csv ou du programme python,
+vérifier que leur nom est bien écrit dans la ligne de commande. 
+
+	Import module : no module named [MODULE]
+Il manque une librairie pour faire fonctionner le programme, faire pip install [Module] et relancer le programme.
+
+	KeyError : Column not found
+La colonne décrite n’a pas été trouvée par le programme. Vérifier que les champs thématiques et sous thématiques sont bien écrits comme présentés en entrée.
+
+
+		
