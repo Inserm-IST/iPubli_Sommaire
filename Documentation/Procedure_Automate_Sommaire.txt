@@ -33,7 +33,9 @@ Dans Anaconda prompt, naviguer jusqu'au dossier de travail: cd chemin/vers/le/do
 Puis lancer le programme python Compresse_automate_sommaire.py Nom/du/tableur
 
 Des informations sont affichées dans le terminal pour suivre le travail réalisé par le programme. Le sommaire en html est généré au niveau du dossier du travail sous le nom sommaire.html
-	
+
+Ajouter le résultat dans Dspace:
+Dans la description de la collection, coller le css correspondant (trouvable dans le dossier Documentation) puis le code html disponible dans le fichier sommaire.html généré.
 
 En cas de problèmes:
 Il peut arriver qu’il y ait une erreur et que le programme ne s’exécute pas.
