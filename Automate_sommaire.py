@@ -43,6 +43,7 @@ def creation_sommaire(df, details):
             handle = df_line['dc.identifier.uri']
             # suppression d'url pour conserver uniquement le handle
             handle_propre = "https://www.ipubli.inserm.fr/handle/10608/"+handle[-5:]
+            print(handle_propre)
             ul_html = ET.SubElement(div2_html, "ul")
             # création de la balise a qui contient le handle et permet de faire le lien avec la page de l'article. Ajout
             # de la valeur handle dans l'attribut handle et de l'attribut onclick permettant de création un lien
@@ -95,7 +96,7 @@ def creation_html(categorie, df, racine):
                     # stockage dans la valeur handle de la valeur de la cellule identifier
                     handle = df_line['dc.identifier.uri']
                     # suppression d'url pour conserver uniquement le handle
-                    handle_propre = handle[-5:]
+                    handle_propre ="https://www.ipubli.inserm.fr/handle/10608/"+ handle[-5:]
                     # création de la balise a qui contient le handle et permet de faire le lien avec la page de l'article. Ajout
                     # de la valeur handle dans l'attribut handle et de l'attribut onclick permettant de création un lien
                     a_html = ET.SubElement(li_html, "a", href=handle_propre,
@@ -118,7 +119,7 @@ def creation_html(categorie, df, racine):
                 # stockage dans la valeur handle de la valeur de la cellule identifier
                 handle = df_line['dc.identifier.uri']
                 # suppression d'url pour conserver uniquement le handle
-                handle_propre = handle[-5:]
+                handle_propre = "https://www.ipubli.inserm.fr/handle/10608/"+handle[-5:]
                 # création de la balise a qui contient le handle et permet de faire le lien avec la page de l'article. Ajout
                 # de la valeur handle dans l'attribut handle et de l'attribut onclick permettant de création un lien
                 a_html = ET.SubElement(li_html, "a", href=handle_propre,
@@ -213,7 +214,7 @@ def creation_sommaire(csv_file):
     :return: fichier xml sommaire.xml
     """
     # lecture du fichier csv et stockage dans une variable df
-    df = pd.read_csv(csv_file)
+    df = pd.read_csv(csv_file,encoding="utf-8")
     print("Traitement du csv lancé")
     # la variable list_div mobilise la fonction create_df_cat qui récupère la liste des différentes catégories présentes dans
     # le csv
@@ -239,7 +240,7 @@ def creation_sommaire(csv_file):
     # impression de l'arbre xml dans un fichier xml
     racine.write("sommaire.html", encoding="utf-8")
     # ajout du css en tête de fichier:
-    creation_css("sommaire.html")
+    #creation_css("sommaire.html")
     print("Le sommaire a bien été généré, vous pouvez le retrouver dans le fichier sommaire.xml disponible dans votre dossier de traitement")
 
 
