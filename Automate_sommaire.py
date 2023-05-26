@@ -64,7 +64,7 @@ def creation_titre(racine, titre, niveau):
     cat_html.text = str(titre)
     return racine, details_html
 
-def creation_html(categorie, df, racine):
+def creation_html(categorie, df, racine, souscategorie):
     """
     Fonction qui, à partir d'un dataframe pour une catégorie, met à jour l'arbre xml en y ajouter les balises et texte pour chaque article
     :param categorie: catégorie traitée
@@ -77,7 +77,7 @@ def creation_html(categorie, df, racine):
     df_categorie = df_categorie.reset_index(drop=True)
     # création des balises et insertion du nom de la catégorie
     racine,details_categorie = creation_titre(racine, categorie, 1)
-    if categorie == "Résultat de recherche" or categorie == "Actualité institutionnelle":
+    if categorie == "Actualité institutionnelle":
         sous_cat = create_df_cat(df_categorie, "sous_thematique")
         for el in sous_cat:
             df_sous_cat = df_categorie.loc[df_categorie['sous_thematique'] == el]
@@ -97,6 +97,32 @@ def creation_html(categorie, df, racine):
                     handle = df_line['dc.identifier.uri']
                     # suppression d'url pour conserver uniquement le handle
                     handle_propre ="https://www.ipubli.inserm.fr/handle/10608/"+ handle[-5:]
+                    # création de la balise a qui contient le handle et permet de faire le lien avec la page de l'article. Ajout
+                    # de la valeur handle dans l'attribut handle et de l'attribut onclick permettant de création un lien
+                    a_html = ET.SubElement(li_html, "a", href=handle_propre,
+                                           onclick="window.open(this.href,'_blank');return false;")
+                    # ajout du texte dans la cellule titre dans la balise titre
+                    a_html.text = df_line["dc.title[fr]"]
+    elif categorie=="Résultat de recherche" and souscategorie==True:
+        sous_cat = create_df_cat(df_categorie, "sous_thematique")
+        for el in sous_cat:
+            df_sous_cat = df_categorie.loc[df_categorie['sous_thematique'] == el]
+            df_sous_cat = df_sous_cat.reset_index(drop=True)
+            racine_sous_cat, details_sous_cat = creation_titre(details_categorie, el, 3)
+            cat_date = create_df_cat(df_sous_cat, "dc.date.issued[fr]")
+            for date in cat_date:
+                df_date = df_sous_cat.loc[df_sous_cat['dc.date.issued[fr]'] == date]
+                df_date = df_date.reset_index(drop=True)
+                racine_date, details_date = creation_titre(details_sous_cat, str(date), 4)
+                for n in range(len(df_date)):
+                    df_line = df_date.iloc[n]
+                    li_html = ET.SubElement(details_date, "li")
+                    li_html.attrib['class'] = "som-titre-niveau2"
+
+                    # stockage dans la valeur handle de la valeur de la cellule identifier
+                    handle = df_line['dc.identifier.uri']
+                    # suppression d'url pour conserver uniquement le handle
+                    handle_propre = "https://www.ipubli.inserm.fr/handle/10608/" + handle[-5:]
                     # création de la balise a qui contient le handle et permet de faire le lien avec la page de l'article. Ajout
                     # de la valeur handle dans l'attribut handle et de l'attribut onclick permettant de création un lien
                     a_html = ET.SubElement(li_html, "a", href=handle_propre,
@@ -208,7 +234,8 @@ li.som-titre-niveau4:hover{
 
 @click.command()
 @click.argument("csv_file", type=str)
-def creation_sommaire(csv_file):
+@click.option("-s", "--souscat", "souscategorie", is_flag=True, default=False)
+def creation_sommaire(csv_file, souscategorie):
     """
     Fonction qui, à partir d'un csv, retourne un fichier xml contenant le sommaire html Medecine\Science
     :return: fichier xml sommaire.xml
@@ -232,7 +259,7 @@ def creation_sommaire(csv_file):
 
         # mobilisation de la fonction creation_html qui, pour toutes les lignes du csv catégorie traitée, créé les balises
         # html correspondantes et y ajoute le texte et les valeurs d'attributs extraites du csv
-        ul = creation_html(categorie, df, ul)
+        ul = creation_html(categorie, df, ul, souscategorie)
 
     # transformation de l'élément xml racine en arbre xml
     racine = ET.ElementTree(racine)
